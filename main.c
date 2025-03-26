@@ -3,5 +3,6 @@
 #include <math.h>
 
 void main () {
-    ponto p1 = cria_ponto(3.0, 4.5);
+    ponto* p = cria_ponto(4.0, 3.5);
+    mostrar_ponto(p);
 }

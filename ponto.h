@@ -2,11 +2,11 @@
 
 typedef struct ponto
 {
-    double x;
-    double y;
+    float x;
+    float y;
 } ponto;
 
-ponto cria_ponto(double x, double y);
-ponto libera_ponto(double x, double y);
-ponto mostrar_ponto(ponto* p);
-ponto diferenca_ponto(ponto* p1, ponto* p2);
+ponto* cria_ponto(float x, float y);
+void libera_ponto(ponto* p);
+void mostrar_ponto(ponto* p);
+double diferenca_ponto(ponto* p1, ponto* p2);
