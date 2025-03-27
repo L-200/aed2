@@ -9,4 +9,4 @@ typedef struct ponto
 ponto* cria_ponto(float x, float y);
 void libera_ponto(ponto* p);
 void mostrar_ponto(ponto* p);
-double diferenca_ponto(ponto* p1, ponto* p2);
+float diferenca_ponto(ponto* p1, ponto* p2);
