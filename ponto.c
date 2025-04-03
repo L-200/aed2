@@ -19,5 +19,5 @@ float diferenca_ponto(ponto* p1, ponto* p2) {
     float diferenca_y = (p2->y - p1->x);
     diferenca_x = (diferenca_x * diferenca_x);
     diferenca_y = (diferenca_y * diferenca_y);
-    return sqrt(diferenca_x + diferenca_y);
+    return sqrt(diferenca_x + diferenca_y); 
 }
