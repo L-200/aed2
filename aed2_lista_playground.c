@@ -181,40 +181,97 @@ void selection_sort(Int_Linked_List* l) {
     }
 }
 
+void recursive_quick_sort(Int_Linked_List* l, Node* inicio, Node* fim) {
+    if (inicio == NULL || fim == NULL || inicio == fim) {
+        return;
+    }
+    Node* pivo = inicio; //escolhido o inicio por que é muito mais facil de implementar
+    Node* aux = inicio->prox;
+    Node* ultimo_menor = inicio;
+    int temp, pivo_value = pivo->value;
+    while (aux != NULL && aux != fim->prox) {
+        if (aux->value < pivo_value) {
+            ultimo_menor = ultimo_menor->prox;
+            temp = ultimo_menor->value;
+            ultimo_menor->value = aux->value;
+            aux->value = temp;
+        }
+        aux = aux->prox;
+    }
+    temp = inicio->value;
+    inicio->value = ultimo_menor->value;
+    ultimo_menor->value = temp;
+    pivo = ultimo_menor; //tirar o pivo do inicio e o colocar na divisao entre maiores e menores
+
+    if (pivo != inicio) {
+        recursive_quick_sort(l, inicio, pivo);
+    }
+    if (pivo->prox != NULL && pivo->prox != fim->prox) {
+        recursive_quick_sort(l, pivo->prox, fim);
+    }
+}
+
+
 void quick_sort(Int_Linked_List* l){
     if(l->prim == NULL || l->prim->prox == NULL) {
         return;
     }
-    int size = get_size(l);
-    int n;
-    int pivo = size/2;
-    Node* pivo_location = l->prim;
-    for(n = 0; n < pivo; n++) {
-        pivo_location = pivo_location->prox;
+    Node* inicio = l->prim;
+    Node* fim;
+    for(fim = inicio;fim->prox != NULL; fim = fim->prox);
+    recursive_quick_sort(l, inicio, fim);
+}
+
+Node* merge(Node* esquerdo, Node* direito) {
+    if(esquerdo == NULL) {
+        return direito;
     }
-    Node* move_lado_maior;
-    Node* move_lado_menor;
-    while(move_lado_menor);
+    if(direito == NULL ) {
+        return esquerdo;
+    }
+    Node* resultado;
+    if(esquerdo->value <= direito->value) {
+        resultado = esquerdo;
+        resultado->prox = merge(esquerdo->prox, direito);
+    } else {
+        resultado = direito;
+        resultado->prox = merge(esquerdo, direito->prox);
+    }
+    return resultado;
+}
+
+Node* merge_sort_recursive (Node* prim) {
+    if(prim == NULL || prim->prox == NULL) {
+        return prim;
+    }
+    Node* devagar = prim;
+    Node* rapido = prim->prox;
+    while (rapido != NULL && rapido->prox != NULL) //metodo para descobrir o meio e o fim
+    { 
+        devagar = devagar->prox;
+        rapido = rapido->prox->prox;
+    }
+    Node* meio = devagar->prox; //comeco da nova lista
+    devagar->prox = NULL; //fim da primeira lista
+
+    Node* esquerda = merge_sort_recursive(prim);
+    Node* direita = merge_sort_recursive(meio);
+    return merge(esquerda, direita);
+}
+
+
+void merge_sort(Int_Linked_List* l) {
+    if(l->prim == NULL || l->prim->prox == NULL) {
+        return;
+    }
+    l->prim = merge_sort_recursive(l->prim);
+    
 }
 
 void main () {
     printf("ola\n");
     Int_Linked_List* l = initialize();
     popula_lista_random(l);
-    // printf("alo\n");
-  /*int resposta01 = search_sequencial(l, 50);
-    int resposta02 = search_sequencial(l, 9560);
-    int resposta03 = search_sequencial(l, 20000); */
-    // printf("calculando primeira resposta\n");
-    // int resposta04 = search_binario(l, 17);
-    // printf("calculando segunda resposta\n");
-    // int resposta05 = search_binario(l, 949);
-    // printf("calculando terceira resposta\n");
-    // int resposta06 = search_binario(l, 200000);
-    // printf("respostas calculadas:\n");
-    // printf("%d\n", resposta04);
-    // printf("%d\n", resposta05);
-    // printf("%d\n", resposta06); 
     Node* n = l->prim;
     int i;
     for(i=0;i<20;i++) {
@@ -222,20 +279,10 @@ void main () {
         n = n->prox;
     }
     printf("alo\n");
-    selection_sort(l);
+    merge_sort(l);
     printf("RESPONDE\n");
     n = l->prim;
-    for(i=0;i<20;i++) {
-        printf("%d  |", n->value);
-        n = n->prox;
-    }
-    printf("\n");
-    for(i;i<40;i++) {
-        printf("%d  |", n->value);
-        n = n->prox;
-    }
-    printf("\n");
-    for(i;i<60;i++) {
+    for(i=0;i<60;i++) {
         printf("%d  |", n->value);
         n = n->prox;
     }
