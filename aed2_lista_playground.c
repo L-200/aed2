@@ -82,27 +82,30 @@ int search_sequencial(Int_Linked_List* l, int value) {
 }
 
 int search_binario(Int_Linked_List* l, int value) {
-    Node *n;
-    int fim = get_size(l);
+    int tamanho = 0;
+    Node* n;
+    
+    // Conta o número de nós corretamente
+    for(n = l->prim; n != NULL; n = n->prox) {
+        tamanho++;
+    }
+
     int inicio = 0;
+    int fim = tamanho - 1;
+
     while (inicio <= fim) {
-        int pos;
-        int meio = inicio + (fim - inicio)/2;
-        n = l->prim;
-        for(pos=0; pos<meio ; pos++) {
-            n = n->prox;
-        }
-        if(n->value < value) { // 5000 < 50
+        int meio = (inicio + fim) / 2;
+        int numero_meio = get(l, meio);  // Supondo que get() retorna o valor na posição "meio"
+
+        if (numero_meio > value) {
             fim = meio - 1;
-        }   
-        else if (n->value > value) { // 5000 > 50
+        } else if (numero_meio < value) {
             inicio = meio + 1;
-        }
-        else {
-            return 1;
+        } else {
+            return 1;  // Encontrado
         }
     }
-    return 0;
+    return 0;  // Não encontrado
 }
 
 void bubble_sort(Int_Linked_List* l) {
@@ -271,20 +274,9 @@ void merge_sort(Int_Linked_List* l) {
 void main () {
     printf("ola\n");
     Int_Linked_List* l = initialize();
-    popula_lista_random(l);
-    Node* n = l->prim;
-    int i;
-    for(i=0;i<20;i++) {
-        printf("%d  |", n->value);
-        n = n->prox;
-    }
-    printf("alo\n");
-    merge_sort(l);
-    printf("RESPONDE\n");
-    n = l->prim;
-    for(i=0;i<60;i++) {
-        printf("%d  |", n->value);
-        n = n->prox;
-    }
-    printf("fim\n");
+    popula_lista(l);
+    printf("%d\n", search_binario(l, 1937));
+    printf("%d\n", search_binario(l, 9999));
+    printf("%d\n", search_binario(l, 12));
+    printf("%d\n", search_binario(l, 5677));
 }
