@@ -13,16 +13,14 @@ Node* initialize(int val) {
     no->dir = NULL;
     no->esq = NULL;
     no->val = val; 
+    return no;
 }
 
 Node* insert_arvore (Node* root_insert, int value) {
-    Node* No = (Node*) malloc(sizeof(Node));
-    No->val = value;
-    No->dir = NULL;
-    No->esq = NULL;
+    Node* No = initialize(value);
     if(root_insert == NULL) {
         root_insert = No;
-    } else if (root_insert->val < value) {       
+    } else if (root_insert->val > value) {       
         root_insert->esq = insert_arvore(root_insert->esq, value);
     } else {
         root_insert->dir = insert_arvore(root_insert->dir, value);
@@ -32,9 +30,9 @@ Node* insert_arvore (Node* root_insert, int value) {
 
 void mostra_arvore (Node* root) {
     if(root != NULL) {
-        mostra_lista(root->esq);
+        mostra_arvore(root->esq);
         printf("%d   |", root->val);
-        mostra_lista(root->dir);
+        mostra_arvore(root->dir);
     }
 }
 
